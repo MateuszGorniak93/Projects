@@ -1,0 +1,71 @@
+ANAGRAMS
+
+W pliku allwords.txt, znajduj¹cym siê w katalogu  {user.home} zapisane s¹ (rozdzielone bia³ymi znakami) s³owa.
+ZnaleŸæ wszystkie anagramy, które mo¿na utworzyæ z  tych s³ów i wypisac je jako listy s³ów na konsoli w porz¹dku liczby anagramów. 
+Przy takiej samej liczbie anagramów listy wypisywane s¹ w porz¹dku alfabetycznym pierwszego s³owa na liœcie.
+
+Dla realizacji tego zadania w klasie Anagrams utworzyæ metodê getSortedByAnQty(), która zwraca listê list s³ów bêdacych anagramami, uporz¹dkowan¹ wedle podanych wy¿ej kryteriów.
+W klasie tej dostarczyæ tak¿e metody String getAnagramsFor(String word), która zwraca napis, przedstwiaj¹cy listê anagramów dla podanego s³owa w postaci:
+
+s³owo: [ anagram1, anagram2, ... , anagramN]
+
+Jeœli  s³owo nie ma nagramow lista jest pusta (po dwukropku mamy [] ). Jesli podanego s³owa nie ma w pliku allwords.txt to po dwukropku powinnien znaleŸæ siê napis null.
+
+S³owa dla których bêdziemy szukaæ anagramów, wczytywane s¹ z pliku o nazwie {user.home}/wordsToFind. 
+
+Rozwi¹zanie zadania u³atwi klasa Main, utworzona przez generator projektów. Ma ona nastêpuj¹c¹ postaæ (nie wolno jej zmieniaæ):
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+  public static void main(String[] args) throws FileNotFoundException {
+    String home = System.getProperty("user.home");
+    String allWords = home + "/allwords.txt";
+    Anagrams an = new Anagrams(allWords);
+    for(List<String> wlist : an.getSortedByAnQty()) {
+      System.out.println(wlist);
+    }
+    System.out.println("************************");
+    Scanner scan = new Scanner(new File(home, "wordsToFind.txt"));
+    while(scan.hasNext()) {
+      System.out.println(an.getAnagramsFor(scan.next()));
+    }
+    scan.close();
+  }
+
+}
+
+Przyk³adowo, jeœli plik allwords.txt zawiera  s³owa:
+
+andes danes deans evil gals lags levi live sedan
+slag streets testers uprising veil vile
+
+a plik wordsToFind s³owa:
+evil streets uprising
+
+- to program (zaczynaj¹cy wykonanie od obowi¹zkowej klasy Main) powinien wyprowadziæ nastêpuj¹c¹ informacjê
+
+[evil, levi, live, veil, vile]
+[andes, danes, deans, sedan]
+[gals, lags, slag]
+[streets, testers]
+[uprising]
+************************
+evil: [levi, live, veil, vile]
+streets: [testers]
+uprising: []
+
+Uwaga: programy nie daj¹ce pokazanej formy wydruku otrzymuj¹ 0 punktów.
+
+Uwaga: nazwy i umiejscowienie plików s¹ obowi¹zkowe. Niespe³nienie tego warunku skutkuje brakiem punktów.
+
+Utworzona przez generator projektów klasa Main zawiera fragment pomocny dla uzyskania wymaganej nazwy pliku.
+
+Uwaga: aby dowiedzieæ siê który  katalog jest  {user.home} i umieœciæ w nim pliki testowe mo¿na z poziomu Javy u¿yæ:
+System.getProperty("user.home");
+Np. jeœli identyfikatorem u¿ytkownika jest Janek, to w Windows 7 katalog {user.home} to C:\Users\Janek.
+
+Nale¿y samodzielnie utworzyæ testowe pliki i umieœciæ je w katalogu {user.home}
+

@@ -1,0 +1,104 @@
+MAYBE
+
+Zadanie: klasa Maybe
+
+Zdefiniowaæ klasê Maybe o nastêpuj¹cych w³aœciwoœciach.
+
+Obiekty Maybe reprezentuj¹ kontenery, które mog¹ zawieraæ lub nie pojedyncz¹ wartoœæ. Motywacj¹ do wprowadzenia takiej konstrukcji jest u³atwienie programowania w sytuacji, gdy zmienna mo¿e mieæ wartoœæ null, szczególnie kiedy wymagane jest jej dalsze bezpieczne przetwarzanie (na przyk³ad za pomoc¹ lambda-wyra¿eñ, oznaczaj¹cych jakieœ funkcje). Bezpieczne - to znaczy takie, które nie powoduje wyj¹tku NullPointerException.
+
+Obiekty typu Maybe zawieraj¹ jak¹œ wartoœæ lub s¹ puste (nigdy nie powinny mieæ wartoœci null). 
+W klasie Maybe zdefiniowaæ nastêpuj¹ce metody:
+
+Maybe.of(x) - ta metoda statyczna zwraca obiekt Maybe, „opakowuj¹cy” wartoœæ x, dowolnego typu referencyjnego.
+void ifPresent(Consumer cons)  - je¿eli w obiekcie Maybe znajduje siê wartoœæ, wykonywana jest operacja cons z t¹ wartoœci¹ jako argumentem, w przeciwnym razie - gdy obiekt Maybe jest pusty - nic siê nie dzieje.
+Maybe map(Function func) -  je¿eli w obiekcie  jest wartoœæ, wykonywana jest funkcja func z t¹ wartoœci¹ jako argumentem i zwracany jest jej wynik „zapakowany” w nowy obiekt klasy Maybe (to opakowanie jest niezbêdne, bo wynik móg³by byæ null, a tego chcemy unikn¹æ w ewentualnym dalszym przetwarzaniu; jeœli wynikiem funkcji jest null, zwracany jest pusty obiekt klasy Maybe).
+T get() zwraca zawartoœæ obiektu Maybe, ale jeœli jest on pusty, powinna zg³osiæ wyj¹tek NoSuchElementException.
+boolean isPresent() - zwraca true jeœli w obiekcie Maybe zawarta jest wartoœc, a false - gdy jest on pusty
+T orElse(T defVal) - zwraca zawartoœæ obiektu Maybe lub domyœln¹ wartosæ defVal, jeœli obiekt Maybe jest pusty.
+Maybe filter(Predicate pred)  - zwraca  to Maybe, jeœli spe³niony jest warunek pred lub to Maybe jest puste; zwraca puste Maybe, jeœli warunek pred jest niespe³niony.
+
+Klasê Maybe przetestowaæ na przyk³adzie nastêpuj¹cej  klasy Main::
+
+        public class Main {
+
+          public static void test() {
+            // Metoda of(...)
+            String s = "aaa";    
+            Maybe<String> m1 = Maybe.of(s);
+            System.out.println(m1);
+            s = null;
+            Maybe<String> m2 = Maybe.of(s);
+            System.out.println(m2);
+
+            // Metoda ifPresent(...)
+            Integer num = null;
+            Maybe<Integer> m4 = Maybe.of(num);
+            // ZAMIAST
+            if (num != null) System.out.println(num);
+            // PISZEMY
+            m4.ifPresent(n -> System.out.println(n));
+            // A NAWET
+            m4.ifPresent(System.out::println);
+
+            Maybe<Integer> m5 = Maybe.of(10);
+            m5.ifPresent(System.out::println);
+
+            // Metoda map()
+            Maybe<Integer> m6 = m5.map( n -> n +10 ); 
+            System.out.println(m6);
+
+            // Metoda get()
+            System.out.println(m6.get());
+            try {
+              System.out.println(m4.get());
+            } catch(Exception exc) {
+              System.out.println(exc);
+            }
+
+            // Metoda orElse()
+            // ZAMIAST
+            String snum = null;
+            if (num != null) snum = "Wartoœæ wynosi: " + num;
+            if (snum != null) System.out.println(snum);
+            else System.out.println("Wartoœæ niedostêpna");
+
+            //MO¯NA NAPISAÆ
+            String res = Maybe.of(num).map(n -> "Wartoœæ wynosi: "+n)
+                              .orElse("Wartoœæ niedostêpna");
+            System.out.println(res);
+
+            // I filter(...)
+
+            String txt = "Pies";
+            String msg = "";
+
+            //ZAMIAST
+            if (txt != null && txt.length() > 0) {
+              msg = txt;
+            } else {
+              msg = "Txt is null or empty";
+            }
+
+            //MO¯NA NAPISAÆ
+            msg = Maybe.of(txt)
+                       .filter(t -> t.length() > 0)
+                       .orElse("Txt is null or empty"); 
+            System.out.println(msg);
+          }
+
+          public static void main(String[] args) {
+            test();
+          }
+        }
+        // Wynik na konsoli:
+        /*    
+          Maybe has value aaa
+          Maybe is empty
+          10
+          Maybe has value 20
+          20
+          java.util.NoSuchElementException:  maybe is empty
+          Wartoœæ niedostêpna
+          Wartoœæ niedostêpna
+          Pies
+        */

@@ -1,0 +1,65 @@
+LAMCOMB
+
+Zadanie: lambda-wyra¿enia - kompozycja funkcji
+
+Zbudowaæ klasê InputConverter, która pozwala przekszta³ciæ dane wejœciowe (ustalane w konstruktorze klasy) za pomoc¹ funkcji, podanych jako argumenty metody convertBy.
+
+Np. jeœli mamy zdefiniowane operacje (funkcje):
+flines - zwraca listê wierszy z pliku tekstowego
+join - ³¹czy napisy z listy (zwraca napis po³¹czonych ze sob¹ elementów listy napisów)
+collectInts - zwraca listê liczb ca³kowitych zawartych w napisie
+sum - zwraca sumê elementów listy liczb ca³kowitych
+
+to sumê liczb ca³kowitych, wystêpuj¹cych w pliku o nazwie fname mo¿emy uzyskaæ poprzez: 
+
+Integer s = new InputConverter<String>(fname).convertBy(flines, join, collectInts, sum); 
+
+a listê liczb ca³kowitych z napisu txt tak:
+
+List<Integer> n = new InputConverter<String>(txt).convertBy(collectInts);
+
+Istot¹ metody convertBy jest to, ¿e pozwala ona w ró¿ny sposób kombinowaæ ró¿ne operacje na ró¿nych danych i ³atwo uzyskiwaæ wyniki.
+
+Zapewniæ prawid³owe dzia³anie nastêpuj¹cego fragmentu kodu (dostarczonego w szablonie projektu, pliku Main.java nie wolno modyfikowaæ):
+  public static void main(String[] args) {
+    /*<--
+     *  definicja operacji w postaci lambda-wyra¿eñ:
+     *  - flines - zwraca listê wierszy z pliku tekstowego
+     *  - join - ³¹czy napisy z listy (zwraca napis po³¹czonych ze sob¹ elementów listy napisów)
+     *  - collectInts - zwraca listê liczb ca³kowitych zawartych w napisie
+     *  - sum - zwraca sumê elmentów listy liczb ca³kowitych
+     */
+
+    String fname = System.getProperty("user.home") + "/LamComFile.txt"; 
+    InputConverter<String> fileConv = new InputConverter<>(fname);
+    List<String> lines = fileConv.convertBy(flines);
+    String text = fileConv.convertBy(flines, join);
+    List<Integer> ints = fileConv.convertBy(flines, join, collectInts);
+    Integer sumints = fileConv.convertBy(flines, join, collectInts, sum);
+
+    System.out.println(lines);
+    System.out.println(text);
+    System.out.println(ints);
+    System.out.println(sumints);
+
+    List<String> arglist = Arrays.asList(args);
+    InputConverter<List<String>> slistConv = new InputConverter<>(arglist);  
+    sumints = slistConv.convertBy(join, collectInts, sum);
+    System.out.println(sumints);
+
+  }
+Dla nastêpuj¹cych danych z pliku:
+Cars:
+- Fiat: 15, Ford: 20
+- Opel: 8, Mitsubishi: 10
+
+oraz  nastepuj¹cych argumentów wywo³ania metody main:
+Warszawa 100 Kielce 200 Szczecin 300
+
+program powinien wyprowadziæ na konsolê:
+[Cars:, - Fiat: 15, Ford: 20, - Opel: 8, Mitsubishi: 10]
+Cars:- Fiat: 15, Ford: 20- Opel: 8, Mitsubishi: 10
+[15, 20, 8, 10]
+53
+600
+Uwaga: w klasie InputConverter musi wystêpowaæ tylko jedna metoda o nazwie convertBy (czyli w tym zadaniu nie dopuszczamy przeci¹¿ania metody convertBy).

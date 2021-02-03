@@ -1,0 +1,12 @@
+ANAGRASTREAM
+
+Zadanie
+
+Na liœcie s³ów z http://wiki.puzzlers.org/pub/wordlists/unixdict.txt znaleŸæ wszystkie anagramy.
+Wypisaæ s³owa z maksymaln¹ liczb¹ anagramów oraz wszystkie ich anagramy w postaci:
+
+slowo anagram1 anagram2 ....
+
+Program ma byæ bardzo krótki , dziêki zastosowaniu przetwarzania strumieniowego (java.util.stream).
+Bez tego rozwi¹zanie uzyska 0 punktów.
+
