@@ -1,0 +1,93 @@
+JAVABEANS
+
+Korzystaj¹c ze œrodków JavaBeans stworzyæ i przetestowaæ:
+* klasê - ziarno Account, reprezentuj¹c¹ obiekty - konta bankowe. Ka¿de konto ma aktualny stan balance (double) oraz dostêpne s¹ operacje: wp³ata deposit(double), wyp³ata withdraw(double), przelew na inne konto transfer(Account, double). W³aœciwoœæ balance jest zwi¹zana (bounded) i ograniczana (constrained).
+
+* klasê AccountChange, odpowiadaj¹c¹ za reakcje na zmiany w³aœciwoœci ziarna, za pomoc¹ której obni¿enie stanu konta poni¿ej 0 (zera) jest automatycznie raportowane, np. poprzez wyœwietlenie odpowiedniej informacji na konsolê.
+
+* (w przypadku posiadania limitu debetu) klasê AccountLimitator, odpowiadaj¹c¹ za wetowanie niedopuszczalnych zmian w³aœciwoœci ziarna,  za pomoc¹ której wszystkie operacje powoduj¹ce obni¿enie stanu konta poni¿ej limitu debetu s¹ automatycznie odrzucane. Limit debetu to kwota nie-dodatnia oznaczaj¹ca minimalny, akceptowalny stan konta po wykonaniu jakiejœ operacji.
+
+Przyk³adowy program
+
+import java.beans.*;
+
+class AccountTest {
+	
+	public static void main(String[] args)
+	{
+		Account acc1 = null, acc2 = null;
+		
+		try {
+			acc1 = new Account(100);	// stan pocz¹tkowy konta = 100	
+			acc2 = new Account();		// stan pocz¹tkowy konta = 0
+	
+				// ustalamy dla kont acc1, acc2 nieprzekraczalny limit debetu na -200 za pomoc¹ AccountLimitator
+			AccountLimitator acclim = new AccountLimitator(-200);
+
+				// Rejestrujemy s³uchaczy zmian				
+				// --- tu nale¿y dodaæ odpowiedni kod   
+			// ...
+			// ...
+			
+			
+				// ustawiamy dla kont acc1, acc2 obs³ugê reakcji na zmianê stanu konta za pomoc¹ AccountChange
+			AccountChange accountChange = new AccountChange();
+				
+			
+				// Rejestrujemy s³uchaczy zmian								
+				// --- tu nale¿y dodaæ odpowiedni kod   
+			// ...
+			// ... 
+			
+			System.out.println(acc1);
+	        	System.out.println(acc2);
+	        	System.out.println();
+	        
+			acc2.deposit(1000);
+			System.out.println(acc1);
+			System.out.println(acc2);  
+	        	System.out.println();
+		
+	 	       	acc1.withdraw(250);
+	    		System.out.println(acc1);  
+	        	System.out.println(acc2);
+	        	System.out.println();
+	                     
+	    		acc2.transfer(acc1, 1200);
+	    					
+	    		System.out.println(acc1); 
+	        	System.out.println(acc2);
+	        	System.out.println();
+	        
+	        	acc2.transfer(acc1, 1);			
+	        	System.out.println(acc1);
+	        	System.out.println(acc2);
+	 
+		} catch (PropertyVetoException e) {
+			System.out.println(e.getMessage());
+			System.out.println(acc1);
+        		System.out.println(acc2);
+		}
+	}
+}
+
+winien wypisaæ na konsoli:
+Acc 1: 100.0
+Acc 2: 0.0
+
+2: Value changed from 0.0 to 1000.0
+Acc 1: 100.0
+Acc 2: 1000.0
+
+1: Value changed from 100.0 to -150.0, balance < 0!
+Acc 1: -150.0
+Acc 2: 1000.0
+
+2: Value changed from 1000.0 to -200.0, balance < 0!
+1: Value changed from -150.0 to 1050.0
+Acc 1: 1050.0
+Acc 2: -200.0
+
+2: Unacceptable value change: -201.0
+Acc 1: 1050.0
+Acc 2: -200.0
