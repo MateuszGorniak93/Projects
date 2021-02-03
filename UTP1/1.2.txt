@@ -1,0 +1,64 @@
+LAMBDA_ONE
+
+Zadanie: ceny przelotów - lambda1
+
+Lista dest zawiera informacje o cenach przelotów w postaci napisów:
+port_wylotu port_przylotu cena_w_EUR
+
+Nale¿y utworzyæ listê wynikow¹, której elementy bêd¹ opisywaæ ceny przelotów do poszczególnych miejsc (tylko) z Warszawy w PLN i wypisaæ na konsoli jej kolejne elementy.
+
+Aby rozwi¹zaæ to zadanie, nale¿y utworzyæ sparametryzowan¹ klasê ListCreator, zawieraj¹c¹:
+statyczn¹ metodê collectFrom (lista)
+metodê when
+metodê mapEvery
+które dzia³aj¹ w taki sposób, ¿e symboliczny zapis:
+
+    collectFrom(list).when(lambda-1).mapEvery(lambda-2)
+
+spowoduje utworzenie listy wynikowej, której elementy stanowi¹ wybrane przez lambda-1 elementy listy list, przekszta³cone za pomoc¹ podanego lambda-2.
+
+Uwagi: 
+w zadaniu nie wolno korzystaæ z w³asnych interfejsów,
+klasa ListCreator i jej metody powinny dzia³aæ dla list (Ÿród³owej i docelowej) elementów dowolnego typu.
+
+Nastêpuj¹cy (niemodyfikowalny poza miejsami oznaczonymi /*<--*/) program:
+
+    import java.util.*;
+
+    public class Main {
+
+      static List<String> getPricesInPLN(List<String> destinations, double xrate) {
+        return ListCreator.collectFrom(destinations)
+                           .when(  /*<-- lambda wyra¿enie
+                                    *  selekcja wylotów z Warszawy (zaczynaj¹cych siê od WAW)
+                                    */
+                            )
+                           .mapEvery( /*<-- lambda wyra¿enie
+                                       *  wyliczenie ceny przelotu w PLN
+                                       *  i stworzenie wynikowego napisu
+                                       */
+                            );
+      }
+
+      public static void main(String[] args) {
+        // Lista destynacji: port_wylotu port_przylotu cena_EUR 
+        List<String> dest = Arrays.asList(
+          "bleble bleble 2000",
+          "WAW HAV 1200",
+          "xxx yyy 789",
+          "WAW DPS 2000",
+          "WAW HKT 1000"
+        );
+        double ratePLNvsEUR = 4.30;
+        List<String> result = getPricesInPLN(dest, ratePLNvsEUR);
+        for (String r : result) System.out.println(r);
+      }
+    }
+ma wyprowadziæ na konsolê napisy:
+
+to HAV - price in PLN:	5160
+to DPS - price in PLN:	8600
+to HKT - price in PLN:	4300
+Postaæ wydruku jest obowi¹zkowa.
+
+

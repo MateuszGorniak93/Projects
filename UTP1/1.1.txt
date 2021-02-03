@@ -1,0 +1,57 @@
+GENERICS
+
+Zadanie: Generics
+
+Stworzyæ sparametryzowane interfejsy:
+Selector - z metod¹ select, zwracaj¹c¹ true jesli argument spe³nia warunek zapisany w metodzoe i false w przeciwnym razie
+Mapper - z metod¹ map, bêd¹c¹ dowoln¹ funkcj¹: argument -> wynik
+oraz  sparametryzowan¹ klasê ListCreator, zawieraj¹c¹:
+statyczn¹ metodê collectFrom (lista)
+metodê when
+metodê mapEvery
+które dzia³aj¹ w taki sposób, ¿e symboliczny zapis:
+
+    collectFrom(list1).when(selektor).mapEvery(mapper)
+
+spowoduje utworzenie listy wynikowej, której elementy stanowi¹ wybrane przez selektor elementy listy list1, przekszta³acone za pomoc¹ podanego mappera.
+
+Dzia³anie wyjasnia poni¿szy przyk³adowy program (którego plik mo¿e byæ modyfikowany tylko w meijscach oznaczonych przez /*<--    ....  */:
+
+      import java.util.*;
+  
+      public class Main {
+        public Main() {
+          List<Integer> src1 = Arrays.asList(1, 7, 9, 11, 12);
+          System.out.println(test1(src1));
+
+          List<String> src2 = Arrays.asList("a", "zzzz", "vvvvvvv" );
+          System.out.println(test2(src2));
+        }
+  
+        public List<Integer> test1(List<Integer> src) {
+          Selector /*<-- definicja selektora; bez lambda-wyra¿eñ; nazwa zmiennej sel */
+          Mapper   /*<-- definicja mappera; bez lambda-wyra¿eñ; nazwa zmiennej map */
+          return   /*<-- zwrot wyniku
+            uzyskanego przez wywo³anie statycznej metody klasy ListCreator:
+           */  collectFrom(src).when(sel).mapEvery(map);
+        }
+  
+        public List<Integer> test2(List<String> src) {
+          Selector /*<-- definicja selektora; bez lambda-wyra¿eñ; nazwa zmiennej sel */
+          Mapper   /*<-- definicja mappera; bez lambda-wyra¿eñ; nazwa zmiennej map */
+          return   /*<-- zwrot wyniku
+            uzyskanego przez wywo³anie statycznej metody klasy ListCreator:
+           */  collectFrom(src).when(sel).mapEvery(map);
+        }
+  
+        public static void main(String[] args) {
+          new Main();
+        }
+      }
+Gdy w metodzie test1 selektor wybiera z listy liczby < 10, a mapper zwraca liczbê-argument powiêkszon¹ o 10, to na konsoli powinniœmy zobaczyæ:
+[11, 17, 19]
+
+Gdy w metodzie test2  selektor wybiera z listy napisy, których d³ugioœæ jest  wiêksza od 3 znakow, a mapper dzwraca dlugoœæ przekazanego napisu, powiêkszon¹ o 10, to na konsoli zobaczymy:
+[14, 17]
+
+Nale¿y obowi¹zkowo zapewniæ takie w³aœnie dzia³anie programu..

@@ -1,0 +1,37 @@
+LAMBDA_TWO
+
+Zadanie: ceny przelotów - lambda2
+
+Lista dest zawiera informacje o cenach przelotów w postaci napisów:
+port_wylotu port_przylotu cena_w_EUR
+
+Nale¿y utworzyæ listê wynikow¹, której elementy bêd¹ opisywaæ ceny przelotów do poszczególnych miejsc (tylko) z Warszawy w PLN i wypisaæ na konsoli jej kolejne elementy, u¿ywaj¹c nastêpuj¹cego programu:
+
+/*<-- niezbêdne importy */
+
+public class Main {
+
+  public static void main(String[] args) {
+    // Lista destynacji: port_wylotu port_przylotu cena_EUR 
+    List<String> dest = Arrays.asList(
+      "bleble bleble 2000",
+      "WAW HAV 1200",
+      "xxx yyy 789",
+      "WAW DPS 2000",
+      "WAW HKT 1000"
+    );
+    double ratePLNvsEUR = 4.30;
+    List<String> result = 
+    /*<-- tu nale¿y dopisaæ fragment
+     * przy czym nie wolno u¿ywaæ ¿adnych w³asnych klas, jak np. ListCreator
+     * ani te¿ ¿adnych w³asnych interfejsów
+     */
+
+    for (String r : result) System.out.println(r);
+  }
+}
+
+Plik Main.java wolno modyfikowaæ tylko w miejscach oznaczonych /*<--  */, a program ma wyprowadziæ na konsolê:
+to HAV - price in PLN:	5160
+to DPS - price in PLN:	8600
+to HKT - price in PLN:	4300
